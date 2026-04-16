@@ -1,6 +1,6 @@
 #include "base.h"
 
-inline void Map::clear_choose(int x, int y, int v) {
+void Map::clear_choose(int x, int y, int v) {
     mat[x][y].can_choose &= ~(1<<v); 
     row_mask[v][x] &= ~(1<<y);
     column_mask[v][y] &= ~(1<<x);
@@ -8,10 +8,14 @@ inline void Map::clear_choose(int x, int y, int v) {
     box_mask[v][box_ind] &= ~(1<<index_in_box(x, y));
 }
 
+void Map::clear_choose(const std::pair<int, int> &poi, int v) {
+    clear_choose(poi.first, poi.second, v);
+}
+
 void Map::set_value(int x, int y, int v) {
     mat[x][y].value_exact = v;
     for(auto p : affect_ceils(x, y)) {
-        clear_choose(p.first, p.second, v);
+        clear_choose(p, v);
     }
     for(int i = 1;i<=9;i++) clear_choose(x, y, i);
 }

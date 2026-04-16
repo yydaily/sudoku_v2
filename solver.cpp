@@ -10,6 +10,14 @@ int main() {
 
     vector<Plan*> ps = {
         new Plan1(),
+        new Plan2(),
+        new Plan3(),
+        new Plan4(),
+        new Plan5(),
+        new Plan6(),
+        new Plan7(),
+        new Plan8(),
+        new Plan9(),
     };
 
     int cnt = 0;
@@ -23,6 +31,6 @@ int main() {
         if(!update) break;
     }
 
-    // d.display(m.mat);
+    d.display(m.mat);
     return 0;
 }

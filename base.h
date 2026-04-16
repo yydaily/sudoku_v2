@@ -11,6 +11,8 @@ public:
     int value_exact;
     int can_choose;
 
+    int row_index, column_index, box_index;
+
     Ceil() {};
     Ceil(int _v, int _c = mask) : value_exact(_v), can_choose(_c) {};
 };
@@ -28,12 +30,21 @@ public:
                 row_mask[i][j] = mask;
                 column_mask[i][j] = mask;
                 box_mask[i][j] = mask;
+
+                mat[i][j].row_index = i;
+                mat[i][j].column_index = j;
+                mat[i][j].box_index = box_index(i, j);
             }
         }
     }
 
+    Ceil& operator[](const std::pair<int, int> a) {
+        return mat[a.first][a.second];
+    }
+
     // 清除 (x,y) 的 v候选
     void clear_choose(int x, int y, int v);
+    void clear_choose(const std::pair<int, int> &poi, int v);
 
     // 如果 x,y 确定是v，清除 (x,y) 范围内所有可候选的v
     void set_value(int x, int y, int v);

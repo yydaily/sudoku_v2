@@ -21,9 +21,41 @@ class Plan2 : public Plan {
 };
 
 // 区块消除
-// 复杂度 O(?)
+// 复杂度 O(9^3*3)
 class Plan3 : public Plan {
     bool handle(Map &m);
 };
 
+// 显性数对
+// TODO: 只实现了行的数对
+class Plan4 : public Plan {
+    bool handle(Map &m);
+};
+
+// 鱼
+// 复杂度 O(9^4)
+class Plan5 : public Plan {
+    bool handle(Map &m);
+};
+
+// x-wing
+// 复杂度 O(9^4)
+class Plan6 : public Plan {
+    bool handle(Map &m);
+};
+
+// xy-wing
+class Plan7 : public Plan {
+    bool handle(Map &m);
+};
+
+// xyz-wing
+class Plan8 : public Plan {
+    bool handle(Map &m);
+};
+
+// 双强链
+class Plan9 : public Plan {
+    bool handle(Map &m);
+};
 #endif

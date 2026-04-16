@@ -36,6 +36,11 @@ std::string ToString(const std::pair<T1, T2> & t) {
     return "(" + ToString(t.first) + "," + ToString(t.second) + ")";
 }
 
+template<typename T1, typename T2, typename T3>
+std::string ToString(const std::tuple<T1, T2, T3> &t) {
+    return "{" + ToString(std::get<0>(t)) + "," + ToString(std::get<1>(t)) + "," + ToString(std::get<2>(t)) + "}";
+}
+
 template<typename T>
 std::string ToString(const std::vector<T> &v) {
     std::string res = "[";

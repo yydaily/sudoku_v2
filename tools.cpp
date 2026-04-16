@@ -8,7 +8,12 @@ std::set<std::pair<int, int>> affect_ceils(int a, int b) {
         ret.insert({i, b});
         ret.insert({(blocks-1)/3*3+(i-1)/3+1, (blocks-1)%3*3+(i-1)%3+1});
     }
+    ret.erase({a, b});
     return ret;
+}
+
+std::set<std::pair<int, int>> affect_ceils(const std::pair<int, int> &poi) {
+    return affect_ceils(poi.first, poi.second);
 }
 
 int box_index(int a, int b) {
@@ -29,4 +34,8 @@ std::vector<int> mask2vec(int mask) {
     std::vector<int> ret;
     for(int i = 1;i<=9;i++) if(mask&(1<<i)) ret.push_back(i);
     return ret;
+}
+
+bool mask_contain(int mask, int v) {
+    return (mask&v) == v;
 }
