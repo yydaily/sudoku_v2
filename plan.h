@@ -58,4 +58,9 @@ class Plan8 : public Plan {
 class Plan9 : public Plan {
     bool handle(Map &m);
 };
+
+// 三强链
+class Plan10 : public Plan {
+    bool handle(Map &m);
+};
 #endif

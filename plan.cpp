@@ -539,3 +539,72 @@ bool Plan9::handle(Map &m) {
     }
     return false;
 }
+
+// 三强链
+bool Plan10::handle(Map &m) {
+    for(int v = 1;v<=9;v++) {
+        // 找到所有v的强链
+        std::vector<std::pair<std::pair<int, int>, std::pair<int, int>>> links;
+        for(int i = 1;i<=9;i++) {
+            auto indexes = mask2vec(m.row_mask[v][i]);
+            if(indexes.size()==2) {
+                links.push_back({{i, indexes[0]}, {i, indexes[1]}});
+                links.push_back({{i, indexes[1]}, {i, indexes[0]}});
+            }
+
+            indexes = mask2vec(m.column_mask[v][i]);
+            if(indexes.size()==2) {
+                links.push_back({{indexes[0], i}, {indexes[1], i}});
+                links.push_back({{indexes[1], i}, {indexes[0], i}});
+            }
+
+            indexes = mask2vec(m.box_mask[v][i]);
+            if(indexes.size()==2) {
+                links.push_back({box_index2pos(i, indexes[0]), box_index2pos(i, indexes[1])});
+                links.push_back({box_index2pos(i, indexes[1]), box_index2pos(i, indexes[0])});
+            }
+        }
+
+        for(int i = 0;i<links.size();i++) {
+            for(int j = 0;j<links.size();j++) {
+                if(i==j || links[i].second == links[j].first) continue;
+                auto x = affect_ceils(links[i].second);
+                if(x.find(links[j].first) == x.end()) continue;
+
+                bool debug = false;
+                if(v == 3 && links[i] == std::make_pair(std::make_pair(7, 9), std::make_pair(7, 4)) && 
+                        links[j] == std::make_pair(std::make_pair(8, 5), std::make_pair(3, 5))) {
+                    debug = true;
+                }
+
+                for(int k = 0;k<links.size();k++) {
+                    if(k == j || k == i || links[j].second == links[k].first) continue;
+                    x = affect_ceils(links[j].second);
+                    if(x.find(links[k].first) == x.end()) continue;
+                    if(debug && links[k] == std::make_pair(std::make_pair(3, 8), std::make_pair(9, 8))) {
+                        debug = true;
+                    } else debug = false;
+
+                    auto pois = join_set(affect_ceils(links[i].first), affect_ceils(links[k].second));
+                    pois.erase(links[i].first);
+                    pois.erase(links[j].second);
+                    pois.erase(links[k].second);
+
+                    std::set<std::pair<int, int>> erases;
+                    for(auto poi : pois) {
+                        if(m[poi].can_choose & (1<<v)) erases.insert(poi);
+                    }
+
+                    if(erases.size()>0) {
+                        std::cout<<"[规则10] "<<ToString(links[i])<<","<<ToString(links[j])<<","<<ToString(links[k])<<"构成了三强链，删除"<<ToString(erases)<<"中的"<<v<<std::endl;
+                        for(auto const &poi : erases) {
+                            m.clear_choose(poi, v);
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}

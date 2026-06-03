@@ -18,6 +18,7 @@ int main() {
         new Plan7(),
         new Plan8(),
         new Plan9(),
+        new Plan10(),
     };
 
     int cnt = 0;
